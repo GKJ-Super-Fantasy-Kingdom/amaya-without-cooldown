@@ -21,8 +21,8 @@ dll = f"plugins/{name}.dll"
 files = {
     "LICENSE": root / "LICENSE",
     "manifest.json": listing / "manifest.json",
-    "icon.png": listing / "icon.png",
-    "README.md": root / "README.md",
+    "icon.png": listing / "amaya-no-cooldown.png",
+    "README.md": listing / "README.md",
     "CHANGELOG.md": root / "CHANGELOG.md",
     dll: root / "bin" / "Release" / framework / f"{name}.dll",
 }

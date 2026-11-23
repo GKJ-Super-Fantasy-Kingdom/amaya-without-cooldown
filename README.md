@@ -4,6 +4,16 @@ Buy a relic from Amaya, return to the map, and visit her again the same day. Eac
 
 When you first open an older, unmodded save, Amaya generates eligible offers using the game's saved reroll state. Older saves can lack the identity of a previously purchased relic. Visits saved with this version retain the exact offer names and sold slots for the current stock.
 
+## Installation
+
+Choose **Install with App** on the [Amaya Without Cooldown Thunderstore listing](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/AmayaWithoutCooldown/), select your **Super Fantasy Kingdom** profile, and launch with **Start modded**.
+
+## Inside the Demon Shop
+
+![Amaya’s Demon Shop with Bush of Life for 5 coins, a sold middle slot, and Bush for 10 coins](docs/screenshots/0.1.0/demon-shop-after-purchase.png)
+
+The middle offer is sold. You can still buy Bush of Life for 5 coins or Bush for 10, or spend the displayed 1 faith to reroll. The shop description above the cards still shows the base game’s weekly limit.
+
 ## Local import
 
 1. In Thunderstore Mod Manager or r2modman, select **Super Fantasy Kingdom** and a dedicated test profile. Install the BepInEx dependencies listed in the manifest.
