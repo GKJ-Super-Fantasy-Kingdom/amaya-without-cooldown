@@ -19,6 +19,7 @@ if version != project.findtext(".//Version"):
 framework = project.findtext(".//TargetFramework")
 dll = f"plugins/{name}.dll"
 files = {
+    "LICENSE": root / "LICENSE",
     "manifest.json": listing / "manifest.json",
     "icon.png": listing / "icon.png",
     "README.md": root / "README.md",
