@@ -1,0 +1,10 @@
+{
+  "name": "AmayaWithoutCooldown",
+  "version_number": "0.1.0",
+  "website_url": "https://github.com/GKJ-Super-Fantasy-Kingdom/AmayaWithoutCooldown",
+  "description": "Revisit Amaya after buying a relic. Unsold offers stay available at their usual prices, with the game's own controls and reroll costs.",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2305",
+    "BepInEx-HideManagerGameObject_Config-5.4.2304"
+  ]
+}
