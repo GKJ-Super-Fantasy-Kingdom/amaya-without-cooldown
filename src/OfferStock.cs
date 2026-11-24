@@ -3,25 +3,42 @@ using System.Collections.Generic;
 
 namespace AmayaWithoutCooldown
 {
-    // The game saves five integers per object shop: rerolls, closed and three sold slots.
-    // The tagged extension travels with this building in the same save and rewind.
     internal sealed class OfferStock
     {
-        private const int Tag = 0x41574301;
+        private const int DayTag = 0x41574301;
+        private const int SeedTag = 0x41574302;
+        private const int Tag = 0x41574303;
         private const int NativeFields = 5;
-        private const int SlotCount = 3;
-        private int day;
+        private int key;
         private int rerolls;
-        private int sold;
         private string[] offers;
+        private readonly HashSet<int> sold = new HashSet<int>();
+        private readonly HashSet<int> supplied = new HashSet<int>();
+        private string supplier = "";
+        internal int View { get; private set; }
 
-        internal bool SelectStock(int currentDay, int currentRerolls)
+        internal bool IsCurrent(int stockKey, int currentRerolls) => key == stockKey && rerolls == currentRerolls;
+
+        // GameManager.Save clears the replay counter after serializing building data.
+        // Adopt that reset only at load; later changes still invalidate the view.
+        internal void LoadedCounter(int current)
         {
-            if (day != currentDay || rerolls != currentRerolls)
+            if (offers != null && current == 0 && rerolls > 0) rerolls = 0;
+        }
+
+        internal bool Matches(int slot, string id) => offers != null && slot >= 0 && slot < offers.Length
+            && offers[slot] == id && !IsSold(slot);
+
+        internal bool SelectStock(int stockKey, int currentRerolls, bool refresh = false)
+        {
+            View++;
+            if (refresh || !IsCurrent(stockKey, currentRerolls))
             {
-                day = currentDay;
+                key = stockKey;
                 rerolls = currentRerolls;
-                sold = 0;
+                sold.Clear();
+                supplied.Clear();
+                supplier = "";
                 offers = null;
             }
             return offers != null;
@@ -35,82 +52,101 @@ namespace AmayaWithoutCooldown
             chosen.AddRange(offers);
         }
 
-        internal bool IsSold(int slot) => slot >= 0 && slot < SlotCount && (sold & (1 << slot)) != 0;
-
-        internal bool MarkSold(int slot)
+        internal void RecordSupplier(int slot, string provider)
         {
-            if (offers == null || slot < 0 || slot >= offers.Length || slot >= SlotCount)
-                return false;
-
-            sold |= 1 << slot;
-            return true;
+            if (offers == null && slot >= 0 && !string.IsNullOrEmpty(provider))
+            {
+                supplied.Add(slot);
+                supplier = provider;
+            }
         }
+
+        internal bool SuppliedBy(int slot, string provider) => supplied.Contains(slot) && supplier == provider;
+        internal bool IsSold(int slot) => sold.Contains(slot);
+
+        internal bool MarkSold(int slot) => offers != null && slot >= 0 && slot < offers.Length && sold.Add(slot);
 
         internal void Write(List<int> data)
         {
-            if (data.Count != NativeFields)
-                return;
-
-            for (int slot = 0; slot < SlotCount; slot++)
+            if (data.Count < NativeFields) return;
+            for (int slot = 0; slot < 3; slot++)
                 data[2 + slot] = IsSold(slot) ? 1 : 0;
 
-            if (offers == null)
-                return;
-
+            if (offers == null) return;
             data.Add(Tag);
-            data.Add(day);
+            data.Add(key);
             data.Add(rerolls);
             data.Add(offers.Length);
-            foreach (string identifier in offers)
+            WriteString(data, supplier);
+            for (int slot = 0; slot < offers.Length; slot++)
             {
-                data.Add(identifier.Length);
-                foreach (char character in identifier)
-                    data.Add(character);
+                data.Add((IsSold(slot) ? 1 : 0) | (supplied.Contains(slot) ? 2 : 0));
+                WriteString(data, offers[slot]);
             }
         }
 
-        internal static OfferStock Read(List<int> data, int currentDay)
+        private static void WriteString(List<int> data, string value)
         {
-            var stock = new OfferStock { day = currentDay };
-            if (data.Count < NativeFields)
-                return stock;
+            data.Add(value.Length);
+            foreach (char character in value) data.Add(character);
+        }
 
-            stock.rerolls = data[0];
-            for (int slot = 0; slot < SlotCount; slot++)
-                if (data[2 + slot] > 0)
-                    stock.sold |= 1 << slot;
+        private static bool ReadString(List<int> data, ref int offset, out string value)
+        {
+            value = null;
+            if (offset >= data.Count) return false;
+            int length = data[offset++];
+            if (length < 0 || length > data.Count - offset) return false;
+            var chars = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                int next = data[offset++];
+                if (next < char.MinValue || next > char.MaxValue) return false;
+                chars[i] = (char)next;
+            }
+            value = new string(chars);
+            return true;
+        }
 
-            if (data.Count < 9 || data[5] != Tag)
-                return stock;
+        internal static OfferStock Read(List<int> data, int stockKey)
+        {
+            var native = new OfferStock { key = stockKey };
+            if (data.Count < NativeFields) return native;
+            native.rerolls = data[0];
+            for (int slot = 0; slot < 3; slot++)
+                if (data[2 + slot] > 0) native.sold.Add(slot);
 
-            int count = data[8];
-            if (count < 0 || count > SlotCount)
-                return stock;
+            int start = data.IndexOf(Tag, NativeFields);
+            if (start < 0) start = data.IndexOf(SeedTag, NativeFields);
+            if (start < 0) start = data.IndexOf(DayTag, NativeFields);
+            if (start < 0 || data.Count - start < 4) return native;
 
-            var restored = new string[count];
-            int offset = 9;
+            bool current = data[start] == Tag;
+            int count = data[start + 3];
+            int offset = start + 4;
+            var restored = new OfferStock {
+                key = data[start] == DayTag ? unchecked(data[start + 1] * 31) : data[start + 1],
+                rerolls = data[start + 2]
+            };
+            if (current && !ReadString(data, ref offset, out restored.supplier)) return native;
+            // Each entry has a length and at least one character, plus flags in v3.
+            if (count < 0 || count > (data.Count - offset) / (current ? 3 : 2)) return native;
+            restored.offers = new string[count];
+            if (!current) restored.sold.UnionWith(native.sold);
             for (int slot = 0; slot < count; slot++)
             {
-                if (offset >= data.Count)
-                    return stock;
-                int length = data[offset++];
-                if (length <= 0 || length > data.Count - offset)
-                    return stock;
-                var identifier = new char[length];
-                for (int i = 0; i < length; i++)
+                if (current)
                 {
-                    int value = data[offset++];
-                    if (value < char.MinValue || value > char.MaxValue)
-                        return stock;
-                    identifier[i] = (char)value;
+                    if (offset >= data.Count) return native;
+                    int flags = data[offset++];
+                    if ((flags & ~3) != 0) return native;
+                    if ((flags & 1) != 0) restored.sold.Add(slot);
+                    if ((flags & 2) != 0) restored.supplied.Add(slot);
                 }
-                restored[slot] = new string(identifier);
+                if (!ReadString(data, ref offset, out var id) || id.Length == 0) return native;
+                restored.offers[slot] = id;
             }
-
-            stock.day = data[6];
-            stock.rerolls = data[7];
-            stock.offers = restored;
-            return stock;
+            return restored;
         }
     }
 }

@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace AmayaWithoutCooldown
 {
-    [BepInPlugin(Id, "Amaya Without Cooldown", "0.1.0")]
+    [BepInPlugin(Id, "Amaya Without Cooldown", "0.1.1")]
     public sealed class Plugin : BaseUnityPlugin
     {
         private const string Id = "gkj.sfk.amayawithoutcooldown";

@@ -21,7 +21,7 @@ dll = f"plugins/{name}.dll"
 files = {
     "LICENSE": root / "LICENSE",
     "manifest.json": listing / "manifest.json",
-    "icon.png": listing / "amaya-no-cooldown.png",
+    "icon.png": listing / "icon.png",
     "README.md": listing / "README.md",
     "CHANGELOG.md": root / "CHANGELOG.md",
     dll: root / "bin" / "Release" / framework / f"{name}.dll",
@@ -40,6 +40,8 @@ with TemporaryDirectory(dir=out.parent) as scratch:
         for member, source in files.items():
             if z.read(member) != source.read_bytes():
                 raise SystemExit(f"Content mismatch: {member}")
+        for member in ("README.md", "CHANGELOG.md"):
+            z.read(member).decode("utf-8")
         with Image.open(BytesIO(z.read("icon.png"))) as icon:
             if icon.format != "PNG" or icon.size != (256, 256):
                 raise SystemExit("Expected a 256 by 256 PNG icon.")

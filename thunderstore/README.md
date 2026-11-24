@@ -3,19 +3,25 @@
 ## How the shop works
 
 - **Revisit for free.** The relic you bought is marked **Sold**. The remaining offers stay in their slots at their usual coin prices.
-- **Choose when to reroll.** Stock changes daily. To see a new selection sooner, use Amaya’s **Reroll** button. The game applies the displayed faith cost or an available free reroll.
+- **Choose when to reroll.** Stock changes daily. To see a new selection sooner, use Amaya’s **Reroll** button. The game applies the displayed Faith cost or an available free reroll. A free reroll spends zero Faith at the shop. When Continue replays a reroll from a checkpoint, the base game can still deduct Faith, including one Faith for a single recorded reroll.
 - **Continue your run.** The mod saves the current offers and sold slots with Amaya’s shop.
 
 ## Controls
 
-Use the Demon Shop’s usual mouse, keyboard, or controller prompts to buy, reroll, or leave. To make another purchase, select Amaya again on the map.
+Click **Reroll**, or move focus to it and press Confirm (Enter or controller A by default). The number beside the Faith icon is the price. To leave while an offer is focused, press Back (Escape or controller B by default). Select Amaya again on the map to reopen her shop.
 
 ## Installation
 
 Choose **Install with App**, select your **Super Fantasy Kingdom** profile, and launch with **Start modded**.
 
-## Screenshot
+## Inside the Demon Shop
 
-![Amaya’s Demon Shop with Bush of Life for 5 coins, a sold middle slot, and Bush for 10 coins](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/c3f78c0c1bab8d1d7228ea1ea673393f9455fe0e/docs/screenshots/0.1.0/demon-shop-after-purchase.png)
+These in-game captures show the shop after a same-day return in 0.1.0, using simulated controller input. The shop description still mentions the base game's weekly limit.
 
-The shop text still describes the base game’s weekly limit. With the mod active, you can buy either remaining offer.
+![Reopened Demon Shop with a sold left slot and focus on Bait's buy button](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/d3c6338b5ad73d71e17f743d43be767d84940fa5/docs/screenshots/0.1.0/reopened-shop-1x.png)
+
+**1× UI scale.** The left slot is sold. Bait costs 7 coins and Cookies with Milk costs 9. The white outline marks the selected buy button.
+
+![Reopened Demon Shop with the Reroll button selected below two available offers](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/d3c6338b5ad73d71e17f743d43be767d84940fa5/docs/screenshots/0.1.0/reopened-shop-1p5x.png)
+
+**1.5× UI scale.** In this run, Bush and Deforestation remain available. Reroll has focus and shows a cost of 3 Faith.
