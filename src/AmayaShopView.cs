@@ -20,6 +20,10 @@ namespace AmayaWithoutCooldown
         private Transform buys;
         private Button reroll;
         private Button cancel;
+        private CanvasGroup rerollGroup;
+        private Color originalRerollDisabledColor;
+        private const float NativeDimAlpha = 0.6f;
+        private const float ReadableDimAlpha = 0.9f;
         private RectTransform header;
         private TMP_Text title;
         private Transform resources;
@@ -27,6 +31,26 @@ namespace AmayaWithoutCooldown
         private CanvasGroup stripGroup;
         private float offset;
         private readonly Vector3[] corners = new Vector3[4];
+
+        internal static void ShowPurchasedIcon(GameObject card, string identifier)
+        {
+            if (card == null || string.IsNullOrEmpty(identifier)) return;
+            var relic = AddressablesManager.Instance.GetRelic(identifier);
+            if (relic == null || relic.GetIdentifier() != identifier) return;
+            var sprite = relic.GetIcon();
+            if (sprite == null) return;
+
+            var icon = new GameObject("Purchased relic", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            icon.transform.SetParent(card.transform, false);
+            icon.sprite = sprite;
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+            // Leave the native Sold ribbon and its disabled price slot intact.
+            var rect = icon.rectTransform;
+            rect.anchorMin = new Vector2(0.34f, 0.63f);
+            rect.anchorMax = new Vector2(0.66f, 0.85f);
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+        }
 
         internal void Open()
         {
@@ -38,13 +62,29 @@ namespace AmayaWithoutCooldown
             title = header?.Find("Header")?.GetComponent<TMP_Text>();
             if (Chainloader.PluginInfos.ContainsKey("sfk.daybook"))
                 resources = FindObjectOfType<UIHeader>()?.transform.Find("PanelResources");
+            rerollGroup = reroll?.GetComponent<CanvasGroup>();
+            if (reroll != null) originalRerollDisabledColor = reroll.colors.disabledColor;
             enabled = true;
+        }
+
+        internal static void ReadablePrice(Button button, CanvasGroup group)
+        {
+            // Sold placeholders are fully transparent. Only correct the game's partially
+            // faded price, where the disabled button tint also dims the background.
+            if (button == null || group == null || !Mathf.Approximately(group.alpha, NativeDimAlpha) || button.IsInteractable()) return;
+            var colors = button.colors;
+            var tint = colors.disabledColor;
+            tint.a = 1f;
+            colors.disabledColor = tint;
+            button.colors = colors;
+            group.alpha = ReadableDimAlpha;
         }
 
         private void LateUpdate()
         {
             if (CurrentOverlay(OverlayManager.Instance) != merchant || Details(OverlayManager.Instance).IsActive()) return;
             ClearLedger();
+            if (reroll != null) ReadablePrice(reroll, rerollGroup);
             var pad = GamepadManager.Instance;
             var events = EventSystem.current;
             if (events == null || !pad.IsGamepadInUse() || PauseMenuManger.Instance?.IsOpen() == true) return;
@@ -102,6 +142,15 @@ namespace AmayaWithoutCooldown
             offset = value;
         }
 
-        private void OnDisable() => SetOffset(0f);
+        private void OnDisable()
+        {
+            SetOffset(0f);
+            if (reroll == null) return;
+            var colors = reroll.colors;
+            colors.disabledColor = originalRerollDisabledColor;
+            reroll.colors = colors;
+            if (rerollGroup != null && Mathf.Approximately(rerollGroup.alpha, ReadableDimAlpha))
+                rerollGroup.alpha = NativeDimAlpha;
+        }
     }
 }

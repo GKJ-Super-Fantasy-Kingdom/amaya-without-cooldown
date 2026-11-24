@@ -75,6 +75,15 @@ namespace AmayaWithoutCooldown
         private static readonly System.Reflection.MethodInfo Seed =
             AccessTools.Method(typeof(BuildingAmayaShop), "GetRandomSeedModifier");
 
+        [HarmonyPostfix, HarmonyPatch(typeof(BuildingObjectShop), "GetDescription")]
+        private static void ShopDescription(BuildingObjectShop __instance, ref string __result)
+        {
+            const string original = "Make a deal with Amaya to get a powerful relic!\n" +
+                "Stock changes daily. You can only get one per week though, and her price changes weekly as well.";
+            if (__instance is BuildingAmayaShop && __result?.Trim().Replace("\r\n", "\n").Replace(" \n", "\n") == original)
+                __result = "Buy a relic, then return for the remaining offers.\nStock changes daily. Prices change weekly.";
+        }
+
         internal static int StockKey(BuildingAmayaShop shop) => (int)Seed.Invoke(shop, null);
 
         private static readonly AccessTools.FieldRef<UIOverlayMerchant, Func<Relic>> Generator =
@@ -129,7 +138,12 @@ namespace AmayaWithoutCooldown
             for (int slot = 0; slot < ___m_ChosenRelics.Count; slot++)
             {
                 string id = ___m_ChosenRelics[slot];
-                var relic = stock.IsSold(slot) ? null : Available(shop, __instance, stock, slot, id);
+                if (stock.IsSold(slot))
+                {
+                    AmayaShopView.ShowPurchasedIcon(__instance.AddSold(-1, false), id);
+                    continue;
+                }
+                var relic = Available(shop, __instance, stock, slot, id);
                 if (relic == null)
                     __instance.AddSold(-1, false);
                 else
@@ -142,6 +156,13 @@ namespace AmayaWithoutCooldown
         private static void AfterCards(OfferStock __state, List<string> ___m_ChosenRelics)
         {
             __state?.Remember(___m_ChosenRelics);
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(UIOverlayMerchant), "AddBuyButton")]
+        private static void PriceContrast(UIOverlayMerchant __instance, Transform __result)
+        {
+            if (Owners.TryGetValue(__instance, out _) && __result != null)
+                AmayaShopView.ReadablePrice(__result.GetComponent<Button>(), __result.GetComponent<CanvasGroup>());
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIOverlayMerchant), "AddRelic")]

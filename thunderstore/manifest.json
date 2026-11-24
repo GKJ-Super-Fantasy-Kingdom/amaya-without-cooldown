@@ -1,6 +1,6 @@
 {
   "name": "AmayaWithoutCooldown",
-  "version_number": "0.1.1",
+  "version_number": "0.1.2",
   "website_url": "https://github.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown",
   "description": "Revisit Amaya after buying a relic. Unsold offers stay available at their usual prices, with the game's own controls and reroll costs.",
   "dependencies": [

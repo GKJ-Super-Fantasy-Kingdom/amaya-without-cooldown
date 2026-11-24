@@ -523,6 +523,30 @@ internal static class ShopFixture
         Check(Wallet[ResourceType.Coins] == coins && grants == rewardCount, "changed-pack Continue spends and grants nothing");
     }
 
+    private static string description;
+    private static bool LocalizedDescription(ref string __result)
+    {
+        __result = description;
+        return false;
+    }
+
+    private static void ShopCopy()
+    {
+        var method = AccessTools.Method(typeof(BuildingObjectShop), "GetDescription");
+        Fixture.Patch(method, prefix: new HarmonyMethod(typeof(ShopFixture), "LocalizedDescription"));
+        description = "Make a deal with Amaya to get a powerful relic! \r\nStock changes daily. You can only get one per week though, and her price changes weekly as well.";
+        var amaya = Bare<BuildingAmayaShop>();
+        Check(((string)Call(amaya, "GetDescription")).Contains("return for the remaining offers"),
+            "Amaya explains returning for remaining offers instead of the old weekly limit");
+        Check((string)Call(Bare<BuildingSiegeShop>(), "GetDescription") == description,
+            "other merchants keep their descriptions");
+        foreach (var custom in new[] { "Inventario diario.", "Provider-defined weekly stock." })
+        {
+            description = custom;
+            Check((string)Call(amaya, "GetDescription") == custom, "localized or provider-authored text is preserved");
+        }
+    }
+
     public static int Main(string[] args)
     {
         try
@@ -560,6 +584,7 @@ internal static class ShopFixture
                 "unrelated cards and shop saves keep their normal behavior");
             CheckpointShelf();
             ProviderShelves();
+            ShopCopy();
             ModifiedRules();
             CheckpointAccounting(own);
             return 0;

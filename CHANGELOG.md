@@ -1,3 +1,9 @@
+# 0.1.2
+
+- Keep unavailable coin and Faith prices readable on the Demon Shop's disabled buttons.
+- Show the purchased relic’s icon on its sold card when you return to Amaya.
+- Update the standard English shop description to explain same-day visits, daily stock and weekly prices.
+
 # 0.1.1
 
 - Preserve the same-day shelf when a checkpoint resets the reroll counter.
