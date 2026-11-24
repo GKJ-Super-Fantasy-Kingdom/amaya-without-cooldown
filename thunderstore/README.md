@@ -1,3 +1,5 @@
+# Amaya Without Cooldown
+
 Once you unlock Amaya's Demon Shop, you can buy a relic and visit her again immediately. On a same-day return, the purchased slot reads **Sold** and the other relics are still available at their usual coin prices.
 
 ## Features
@@ -26,10 +28,13 @@ These in-game captures show the shop after a same-day return in 0.1.0, using sim
 
 ## Compatibility
 
-Version 0.1.1 passed offline purchase and reload tests with MoreRelics 1.1.0, both on its own and alongside BakeryUsesWheat 1.2.0. If a content mod removes a saved offer, its slot shows **Sold** and the remaining offers keep their positions.
-
-A free reroll spends zero Faith at the shop. When Continue replays one recorded reroll from a checkpoint, the base game can deduct one Faith even if that reroll was free.
+- With [Weekly Contracts](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/WeeklyContracts/) and [Daybook](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/Daybook/) installed, a live playtest on Amaya 0.1.0 confirmed that claiming a contract reward kept the purchased slot sold and that the ledger recorded shop spending.
+- Amaya 0.1.1 passed offline purchase and reload tests with [MoreRelics 1.1.0](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/), both alone and alongside [BakeryUsesWheat 1.2.0](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/BakeryUsesWheat/). If a content mod removes a saved offer, its slot shows **Sold** and the other offers keep their positions.
+- Older saves can lack the identity of a previously purchased relic. On the first visit, Amaya uses the game's saved reroll state to generate eligible offers.
+- A free reroll spends zero Faith at the shop. When Continue replays one recorded reroll from a checkpoint, the base game can deduct one Faith even if that reroll was free.
 
 ## Installation
 
-Choose **Install with App**, select your **Super Fantasy Kingdom** profile, and install the listed BepInEx dependencies when prompted. Launch with **Start modded** and visit Amaya in a run where her shop is unlocked.
+1. Choose **Install with App** on the [Thunderstore listing](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/AmayaWithoutCooldown/) and select your **Super Fantasy Kingdom** profile.
+2. When prompted, install [BepInExPack](https://thunderstore.io/c/super-fantasy-kingdom/p/BepInEx/BepInExPack/) and [HideManagerGameObject_Config](https://thunderstore.io/c/super-fantasy-kingdom/p/BepInEx/HideManagerGameObject_Config/).
+3. Choose **Start modded** and visit Amaya in a run where her shop is unlocked.

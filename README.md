@@ -1,16 +1,20 @@
 # Amaya Without Cooldown
 
-Buy a relic from Amaya, return to the map, and visit her again the same day. Each purchased slot displays as sold. Other offers retain their positions and normal coin prices. The selection changes with the game's day or an eligible native reroll. The mod uses Amaya's usual unlock, merchant screen, controls and prompts.
+Once you unlock Amaya's Demon Shop, you can buy a relic and visit her again immediately. On a same-day return, the purchased slot reads **Sold** and the other relics are still available at their usual coin prices.
 
-When you first open an older, unmodded save, Amaya generates eligible offers using the game's saved reroll state. Older saves can lack the identity of a previously purchased relic. Visits saved with this version retain the exact offer names and sold slots for the current stock.
+## Features
 
-A free reroll uses no Faith at the shop. When Continue replays one recorded reroll, the base game can deduct one Faith even if the original roll used a free allowance.
+- Returning to the shop is free. Each purchase marks just its own slot as sold.
+- Stock changes daily. Use **Reroll** for a fresh selection sooner, at the displayed Faith price or with an earned free reroll.
+- Continue restores the offers and sold slots saved for that day's shop.
 
-## Installation
+## How to Use
 
-Choose **Install with App** on the [Amaya Without Cooldown Thunderstore listing](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/AmayaWithoutCooldown/), select your **Super Fantasy Kingdom** profile, and launch with **Start modded**.
+1. Click Amaya on the map, or move the controller cursor over her and press **A**.
+2. Click the price beneath a relic to buy it, or focus its buy button and press Confirm (**Enter** or controller **A** by default). After the purchase, select Amaya again to buy another offer.
+3. To change the selection, click **Reroll**, or focus it and press Confirm. To leave without buying, click **No, thanks!** or press **Escape** or controller **B**.
 
-## Inside the Demon Shop
+## Screenshots
 
 These in-game captures show the shop after a same-day return in 0.1.0, using simulated controller input. The shop description still mentions the base game's weekly limit.
 
@@ -21,6 +25,19 @@ These in-game captures show the shop after a same-day return in 0.1.0, using sim
 ![Reopened Demon Shop with the Reroll button selected below two available offers](docs/screenshots/0.1.0/reopened-shop-1p5x.png)
 
 **1.5× UI scale.** In this run, Bush and Deforestation remain available. Reroll has focus and shows a cost of 3 Faith.
+
+## Compatibility
+
+- With [Weekly Contracts](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/WeeklyContracts/) and [Daybook](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/Daybook/) installed, a live playtest on Amaya 0.1.0 confirmed that claiming a contract reward kept the purchased slot sold and that the ledger recorded shop spending.
+- Amaya 0.1.1 passed offline purchase and reload tests with [MoreRelics 1.1.0](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/), both alone and alongside [BakeryUsesWheat 1.2.0](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/BakeryUsesWheat/). If a content mod removes a saved offer, its slot shows **Sold** and the other offers keep their positions.
+- Older saves can lack the identity of a previously purchased relic. On the first visit, Amaya uses the game's saved reroll state to generate eligible offers.
+- A free reroll spends zero Faith at the shop. When Continue replays one recorded reroll from a checkpoint, the base game can deduct one Faith even if that reroll was free.
+
+## Installation
+
+1. Choose **Install with App** on the [Thunderstore listing](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/AmayaWithoutCooldown/) and select your **Super Fantasy Kingdom** profile.
+2. When prompted, install [BepInExPack](https://thunderstore.io/c/super-fantasy-kingdom/p/BepInEx/BepInExPack/) and [HideManagerGameObject_Config](https://thunderstore.io/c/super-fantasy-kingdom/p/BepInEx/HideManagerGameObject_Config/).
+3. Choose **Start modded** and visit Amaya in a run where her shop is unlocked.
 
 ## Local import
 
@@ -37,7 +54,7 @@ These in-game captures show the shop after a same-day return in 0.1.0, using sim
 - Visit with all offers sold. Reach Reroll when eligible or Cancel with the pad. Repeat with keyboard and mouse, then switch back to the pad and check the prompt and focus.
 - Save and Continue with partial stock, check the offers again at the game's restored day, then compare at the next natural day refresh. Check that a still-locked Amaya and another merchant behave as usual.
 
-Version 0.1.1 passed offline stock and purchase tests against the game assemblies, including MoreRelics 1.1.0 with and without BakeryUsesWheat 1.2.0. The live shop and virtual-controller checks used 0.1.0. Physical controller testing and a full save-menu round trip on 0.1.1 remain open. [Compatibility results](tests/Compatibility/README.md)
+The live shop and virtual-controller checks used 0.1.0. Physical controller testing and a full save-menu round trip on 0.1.1 remain open. [Compatibility results](tests/Compatibility/README.md)
 
 ## Build and package
 
