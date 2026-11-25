@@ -1,3 +1,7 @@
+# 0.1.3
+
+Clarify the mod’s description and compatibility for players.
+
 # 0.1.2
 
 - Keep unavailable coin and Faith prices readable on the Demon Shop's disabled buttons.
