@@ -1,6 +1,6 @@
 {
   "name": "AmayaWithoutCooldown",
-  "version_number": "0.1.3",
+  "version_number": "0.1.5",
   "website_url": "https://github.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown",
   "description": "Revisit Amaya immediately after buying a relic. Buy remaining offers the same day, or spend Faith to reroll the shop.",
   "dependencies": [

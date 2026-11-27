@@ -470,6 +470,16 @@ internal static class ShopFixture
         Visit();
         Buy(Cards[slot]);
         Check(grants == rewardCount + 1 && Wallet[ResourceType.Coins] == initial - 9, "active modified purchase price is charged once");
+        var shopPatches = plugin.GetType("AmayaWithoutCooldown.ShopPatches");
+        var activeStocks = AccessTools.Field(shopPatches, "Stocks").GetValue(null);
+        var stockLookup = new object[] { shop, null };
+        Call(activeStocks, "TryGetValue", stockLookup);
+        var soldPrices = AccessTools.Field(shopPatches, "SoldPrices").GetValue(null);
+        var priceLookup = new[] { stockLookup[1], null };
+        surcharge = 10;
+        Check((bool)Call(soldPrices, "TryGetValue", priceLookup) &&
+            ((Dictionary<int, ResourceAmount>)priceLookup[1])[slot].amount == 9,
+            "the sold display keeps the purchase quote after the active price changes");
         Set(DaytimeManager.Instance, "m_CurrentDay", 9);
         Visit();
         Check(Cards[slot] == null && ids.SequenceEqual((List<string>)Get(screen,"m_ChosenRelics")),
@@ -478,6 +488,8 @@ internal static class ShopFixture
         schedule++;
         Visit();
         Check(Cards.Count == 2 && !Cards.Contains(null), "intra-day supplier restock starts a fresh selection");
+        Check(!(bool)Call(soldPrices, "TryGetValue", priceLookup),
+            "fresh stock discards the previous shelf's sold display prices");
         int faith = Wallet[ResourceType.Faith];
         Set(screen, "m_Rerolls", 1);
         int paid = (int)Call(screen, "GetRerollCost");

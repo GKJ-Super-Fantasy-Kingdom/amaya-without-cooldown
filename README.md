@@ -4,8 +4,8 @@ Once you unlock Amaya's Demon Shop, you can buy a relic and visit her again imme
 
 ## Features
 
-- Returning to the shop is free. The purchased slot keeps the relic's icon above its **Sold** ribbon.
-- The coin price stays visible on an unaffordable offer. If you lack the Faith for a reroll, you can still see what it costs.
+- Returning to the shop is free. A purchased slot keeps its relic icon and price visible and is marked **Sold**.
+- Unaffordable offers show their prices and how many coins you still need. Reroll stays visible at its displayed Faith price when you cannot afford it.
 - Stock changes daily. Use **Reroll** for a fresh selection sooner, at the displayed Faith price or with an earned free reroll.
 - Continue restores the offers and sold slots saved for that day's shop.
 
@@ -17,20 +17,21 @@ Once you unlock Amaya's Demon Shop, you can buy a relic and visit her again imme
 
 ## Screenshots
 
-Captured in game on version 0.1.2 at 1920 × 1080 using a virtual controller.
+Captured in game on mod 0.1.5 with a virtual controller.
 
-![Demon Shop with a crown above the sold middle slot and focus on Bait's price](docs/screenshots/0.1.2/reopened-shop-1x.png)
+![Human Demon Shop at 1× with focus on Deforestation, a sold relic, and an unaffordable Bush offer](docs/screenshots/current/human-shop-1x.png)
 
-**1× UI scale.** The crown marks the purchased Banished King. With 8 coins, you can still buy Bait for 7.
+**Human, 1×.** Deforestation is focused. The left slot keeps the icon and price of the purchased relic, while Bush shows the one-coin shortfall.
 
-![Larger Demon Shop cards showing the sold crown and the disabled Rock and reroll prices](docs/screenshots/0.1.2/reopened-shop-1p5x.png)
+![Undead Demon Shop at 1.5× with the sold relic's price visible, focus on Grave, and a dimmed Reroll button](docs/screenshots/current/undead-shop-1p5x.png)
 
-**1.5× UI scale.** The 10-coin Rock and 7-Faith reroll are out of reach. Both prices remain visible beneath the resource strip.
+**Undead, 1.5×.** Grave is focused, Bone is also available, and the native Reroll button is dimmed because you have no Faith.
 
 ## Compatibility
 
-- Tested in game with [Weekly Contracts](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/WeeklyContracts/) and [Daybook](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/Daybook/). The reopened shop clears the resource strip at both UI scales.
-- Version 0.1.2 passed offline purchase and reload tests with [MoreRelics 1.1.0](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/) and with [BakeryUsesWheat 1.2.0](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/BakeryUsesWheat/) also enabled. If a content mod removes a saved offer, its slot shows **Sold** and the other offers keep their positions.
+- Verified on Super Fantasy Kingdom **0.8.070** in Human and Undead, including in the combined [GKJ mod](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/) profile.
+- The shop can share the screen with [Daybook](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/Daybook/). [Weekly Contracts](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/WeeklyContracts/) rewards preserve Amaya’s sold slots and remaining stock.
+- With [More Relics](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/), Amaya uses the active eligible relic pool. If a saved relic is no longer available, its slot shows **Sold** and the other offers keep their positions.
 - Older saves can lack the identity of a previously purchased relic. On the first visit, Amaya uses the game's saved reroll state to generate eligible offers.
 - A free reroll spends zero Faith at the shop. When Continue replays one recorded reroll from a checkpoint, the base game can deduct one Faith even if that reroll was free.
 
@@ -43,7 +44,7 @@ Captured in game on version 0.1.2 at 1920 × 1080 using a virtual controller.
 ## Local import
 
 1. In Thunderstore Mod Manager or r2modman, select **Super Fantasy Kingdom** and a dedicated test profile. Install the BepInEx dependencies listed in the manifest.
-2. Open **Settings → Profile → Import local mod** and select `dist/AmayaWithoutCooldown-0.1.2.zip`. In manager versions with a search box, search Settings for **Import local mod**.
+2. Open **Settings → Profile → Import local mod** and select `dist/AmayaWithoutCooldown-0.1.5.zip`. In manager versions with a search box, search Settings for **Import local mod**.
 3. Choose **Start modded**. In the test profile's `BepInEx/LogOutput.log`, look for **Amaya Without Cooldown is ready.** Use a run where Amaya's shop has already opened.
 
 ## Controller playtest
@@ -55,7 +56,7 @@ Captured in game on version 0.1.2 at 1920 × 1080 using a virtual controller.
 - Visit with all offers sold. Reach Reroll when eligible or Cancel with the pad. Repeat with keyboard and mouse, then switch back to the pad and check the prompt and focus.
 - Save and Continue with partial stock, check the offers again at the game's restored day, then compare at the next natural day refresh. Check that a still-locked Amaya and another merchant behave as usual.
 
-The live shop and virtual-controller checks used 0.1.2. Physical controller testing and a full save-menu round trip with the combined mod set remain open. [Compatibility results](tests/Compatibility/README.md)
+The 0.1.5 candidate passed the focused shop checks with virtual input. The maintainer also controller-tested the combined 0.8.070 release profile. See the [compatibility results](tests/Compatibility/README.md) for earlier offline fixture coverage.
 
 ## Build and package
 

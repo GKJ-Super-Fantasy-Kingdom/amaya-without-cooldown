@@ -1,3 +1,13 @@
+# 0.1.5
+
+- Use the game’s muted Reroll button when a reroll is unavailable.
+
+# 0.1.4
+
+- Keep the relic icon and coin amount visible in purchased slots.
+- Dim unaffordable relic art and show the missing amount beneath the price.
+- Move controller focus to an available offer when the shop opens and keep it on Reroll when another reroll is available.
+
 # 0.1.3
 
 Clarify the mod’s description and compatibility for players.

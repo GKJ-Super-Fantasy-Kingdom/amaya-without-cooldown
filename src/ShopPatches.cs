@@ -17,6 +17,9 @@ namespace AmayaWithoutCooldown
         internal static readonly ConditionalWeakTable<BuildingAmayaShop, OfferStock> Stocks =
             new ConditionalWeakTable<BuildingAmayaShop, OfferStock>();
 
+        private static readonly ConditionalWeakTable<OfferStock, Dictionary<int, ResourceAmount>> SoldPrices =
+            new ConditionalWeakTable<OfferStock, Dictionary<int, ResourceAmount>>();
+
         internal static readonly AccessTools.FieldRef<BuildingObjectShop, int> RerollCount =
             AccessTools.FieldRefAccess<BuildingObjectShop, int>("m_Rerolls");
 
@@ -127,6 +130,7 @@ namespace AmayaWithoutCooldown
             bool refresh = reroll && !ReferenceEquals(opening, shop);
             if (!stock.SelectStock(StockKey(shop), RerollCount(shop), refresh))
             {
+                SoldPrices.Remove(stock);
                 reroll = true;
                 return true;
             }
@@ -140,7 +144,13 @@ namespace AmayaWithoutCooldown
                 string id = ___m_ChosenRelics[slot];
                 if (stock.IsSold(slot))
                 {
-                    AmayaShopView.ShowPurchasedIcon(__instance.AddSold(-1, false), id);
+                    var card = __instance.AddSold(-1, false);
+                    if (card != null)
+                    {
+                        ResourceAmount? paid = SoldPrices.TryGetValue(stock, out var prices) &&
+                            prices.TryGetValue(slot, out var price) ? price : (ResourceAmount?)null;
+                        AmayaShopView.ShowPurchased(__instance, card, id, paid, ___m_GetRelicPriceCallback);
+                    }
                     continue;
                 }
                 var relic = Available(shop, __instance, stock, slot, id);
@@ -159,10 +169,10 @@ namespace AmayaWithoutCooldown
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIOverlayMerchant), "AddBuyButton")]
-        private static void PriceContrast(UIOverlayMerchant __instance, Transform __result)
+        private static void PriceContrast(UIOverlayMerchant __instance, UICard spawned, ResourceAmount[] costs, Transform __result)
         {
             if (Owners.TryGetValue(__instance, out _) && __result != null)
-                AmayaShopView.ReadablePrice(__result.GetComponent<Button>(), __result.GetComponent<CanvasGroup>());
+                AmayaShopView.ShowUnavailable(spawned as UICardRelic, costs, __result);
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIOverlayMerchant), "AddRelic")]
@@ -187,12 +197,13 @@ namespace AmayaWithoutCooldown
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(BuildingObjectShop), "Callback")]
-        private static bool Purchased(BuildingObjectShop __instance, int __0)
+        private static bool Purchased(BuildingObjectShop __instance, int __0, ResourceAmount[] __1)
         {
             if (!(__instance is BuildingAmayaShop shop) || !Stocks.TryGetValue(shop, out var stock))
                 return true;
             if (stock.IsSold(__0)) return false;
             if (!stock.MarkSold(__0)) return true;
+            if (__1?.Length == 1) SoldPrices.GetOrCreateValue(stock)[__0] = __1[0];
 
             // The card owns the transaction. This callback only records the sale and, in vanilla,
             // disables the world shop. Keep the native world target available after the sale.
@@ -209,6 +220,14 @@ namespace AmayaWithoutCooldown
             var merchant = OverlayManager.Instance.GetMerchant();
             var view = merchant.GetComponent<AmayaShopView>() ?? merchant.gameObject.AddComponent<AmayaShopView>();
             view.Open();
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(UIOverlayMerchant), "Reroll",
+            new[] { typeof(bool), typeof(bool), typeof(bool), typeof(bool) })]
+        private static void RerollFocus(UIOverlayMerchant __instance, bool doChangeInventory, bool fromSave)
+        {
+            if (doChangeInventory && !fromSave && Owners.TryGetValue(__instance, out _))
+                __instance.GetComponent<AmayaShopView>()?.ChooseFocusAfterRefresh(true);
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIOverlayMerchant), "Init")]
