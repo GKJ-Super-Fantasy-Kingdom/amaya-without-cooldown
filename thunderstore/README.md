@@ -4,8 +4,8 @@ Once you unlock Amaya's Demon Shop, you can buy a relic and visit her again imme
 
 ## Features
 
-- Returning to the shop is free. The purchased slot keeps the relic's icon above its **Sold** ribbon.
-- The coin price stays visible on an unaffordable offer. If you lack the Faith for a reroll, you can still see what it costs.
+- Returning to the shop is free. A purchased slot keeps its relic icon and price visible and is marked **Sold**.
+- Unaffordable offers show their prices and how many coins you still need. Reroll stays visible at its displayed Faith price when you cannot afford it.
 - Stock changes daily. Use **Reroll** for a fresh selection sooner, at the displayed Faith price or with an earned free reroll.
 - Continue restores the offers and sold slots saved for that day's shop.
 
@@ -17,28 +17,29 @@ Once you unlock Amaya's Demon Shop, you can buy a relic and visit her again imme
 
 ## Screenshots
 
-![Demon Shop with a crown above the sold middle slot and focus on Bait's price](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/586b468230fa874197c008530ce8836a180bb36d/docs/screenshots/0.1.2/reopened-shop-1x.png)
+Captured in game on mod 0.1.5 with a virtual controller.
 
-**1× UI scale.** The crown marks the purchased Banished King. With 8 coins, you can still buy Bait for 7.
+![Human Demon Shop at 1× with focus on Deforestation, a sold relic, and an unaffordable Bush offer](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/a090706c3822beb520d88b41bd56d14c82a9e42a/docs/screenshots/current/human-shop-1x.png)
 
-![Larger Demon Shop cards showing the sold crown and the disabled Rock and reroll prices](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/586b468230fa874197c008530ce8836a180bb36d/docs/screenshots/0.1.2/reopened-shop-1p5x.png)
+**Human, 1×.** Deforestation is focused. The left slot keeps the icon and price of the purchased relic, while Bush shows the one-coin shortfall.
 
-**1.5× UI scale.** The 10-coin Rock and 7-Faith reroll are out of reach. Both prices remain visible beneath the resource strip.
+![Undead Demon Shop at 1.5× with the sold relic's price visible, focus on Grave, and a dimmed Reroll button](https://raw.githubusercontent.com/GKJ-Super-Fantasy-Kingdom/amaya-without-cooldown/a090706c3822beb520d88b41bd56d14c82a9e42a/docs/screenshots/current/undead-shop-1p5x.png)
+
+**Undead, 1.5×.** Grave is focused, Bone is also available, and the native Reroll button is dimmed because you have no Faith.
 
 ## Compatibility
 
-- Works with Super Fantasy Kingdom **0.8.068** and the other [GKJ mods](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/).
-- [Weekly Contracts](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/WeeklyContracts/) rewards leave Amaya’s sold slots and remaining stock in place. The shop can share the screen with [Daybook](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/Daybook/).
-- With [More Relics](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/), Amaya uses the eligible shop pool. If a saved offer is no longer available because a mod was removed, that slot shows **Sold** and the other offers keep their positions.
-- Older saves can lack the identity of a purchased relic. In that case, the first visit uses the game’s saved reroll state. The base game can deduct one Faith when Continue replays a recorded free reroll.
-- These community mods can share the same profile. [Achievement Enabler](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/AchievementEnabler/), [Bakery Uses Wheat](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/BakeryUsesWheat/), [More Relics](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/), [Right Click Skip](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/RightClickSkip/), and [Tavern Food Priorities](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/TavernFoodPriorities/).
+- Verified on Super Fantasy Kingdom **0.8.070** in Human and Undead, including in the combined [GKJ mod](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/) profile.
+- The shop can share the screen with [Daybook](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/Daybook/). [Weekly Contracts](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/WeeklyContracts/) rewards preserve Amaya’s sold slots and remaining stock.
+- With [More Relics](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/MoreRelics/), Amaya uses the active eligible relic pool. If a saved relic is no longer available, its slot shows **Sold** and the other offers keep their positions.
+- Older saves can lack the identity of a previously purchased relic. On the first visit, Amaya uses the game's saved reroll state to generate eligible offers.
+- A free reroll spends zero Faith at the shop. When Continue replays one recorded reroll from a checkpoint, the base game can deduct one Faith even if that reroll was free.
+- The combined 0.8.070 profile also loaded [Achievement Enabler](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/AchievementEnabler/), [Bakery Uses Wheat](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/BakeryUsesWheat/), [Right Click Skip](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/RightClickSkip/), and [Tavern Food Priorities](https://thunderstore.io/c/super-fantasy-kingdom/p/ownlyme/TavernFoodPriorities/).
 
 ## Installation
 
 1. Choose **Install with App** on the [Thunderstore listing](https://thunderstore.io/c/super-fantasy-kingdom/p/GKJ/AmayaWithoutCooldown/) and select your **Super Fantasy Kingdom** profile.
 2. When prompted, install [BepInExPack](https://thunderstore.io/c/super-fantasy-kingdom/p/BepInEx/BepInExPack/) and [HideManagerGameObject_Config](https://thunderstore.io/c/super-fantasy-kingdom/p/BepInEx/HideManagerGameObject_Config/).
 3. Choose **Start modded** and visit Amaya in a run where her shop is unlocked.
-
-## Support
 
 [Support GKJ Games on Ko-fi](https://ko-fi.com/gkj_games)
